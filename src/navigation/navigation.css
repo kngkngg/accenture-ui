@@ -1,0 +1,48 @@
+.navbar-container {
+  background-color: black;
+  height: 65px;
+  position: relative;
+}
+
+.navlink {
+    font-family: "Cera Pro", serif;
+    margin: 0 auto;
+    font-size: 1rem;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.name {
+        font-family: "Mimi", serif;
+        font-size: 2em;
+        text-transform: lowercase;
+        float: left;
+        margin-top: 15px;
+        margin-left: 25px;
+        
+}
+
+
+.name img {
+  max-height: 30px;
+  width: auto;
+}
+
+.navbar-dark .navbar-toggler{
+    color:white;
+    border: none
+}
+
+.ml-auto {
+  float: right;
+  margin-top: 20px;
+}
+
+.navlink p {
+  color: white;
+  padding: 0 20px;
+}
+
+.navlink p:hover {
+  color: #febc11;
+}
