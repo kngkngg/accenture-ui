@@ -5,6 +5,8 @@ import { Nav } from 'react-bootstrap';
 import {Modal} from 'react-bootstrap/';
 import { Button } from 'react-bootstrap';
 import { Form } from 'react-bootstrap';
+import { AuthConsumer } from '../AuthContext';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 class Navigation extends Component {
@@ -12,32 +14,49 @@ class Navigation extends Component {
   constructor(props, context) {
     super(props, context);
     
-    this.handleShow = this.handleShow.bind(this);
-    this.handleClose = this.handleClose.bind(this);
+    this.handleShowContactUs = this.handleShowContactUs.bind(this);
+    this.handleCloseContactUs = this.handleCloseContactUs.bind(this);
+    this.handleShowLogin = this.handleShowLogin.bind(this);
+    this.handleCloseLogin = this.handleCloseLogin.bind(this);
     this.changeName = this.changeName.bind(this);
     this.changeEmail = this.changeEmail.bind(this);
     this.changeContact = this.changeContact.bind(this);
     this.changeTopic = this.changeTopic.bind(this);
     this.changeMessage = this.changeMessage.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.changeLoginEmail = this.changeLoginEmail.bind(this);
+    this.changeLoginPassword = this.changeLoginPassword.bind(this);
     
     this.state = {
-      show: false,
+      showContactUs: false,
+      showLogin: false,
       name: '',
       email: '',
+      loginEmail: '',
+      loginPassword: '',
       contact: '',
       topic: '',
       message: '',
     };
   }
   
-  handleClose() {
-    this.setState({ show: false });
+  handleCloseContactUs() {
+    this.setState({ showContactUs: false });
 
   }
   
-  handleShow() {
-    this.setState({ show: true });
+  handleShowContactUs() {
+    this.setState({ showContactUs: true });
+ 
+  }
+  
+  handleCloseLogin() {
+    this.setState({ showLogin: false });
+
+  }
+  
+  handleShowLogin() {
+    this.setState({ showLogin: true });
  
   }
   
@@ -72,6 +91,18 @@ class Navigation extends Component {
     
   }
   
+  changeLoginEmail(event) {
+    this.setState({loginEmail : event.target.value})
+    console.log(this.state.loginEmail);
+    
+  }
+  
+  changeLoginPassword(event) {
+    this.setState({loginPassword : event.target.value})
+    console.log(this.state.loginPassword);
+    
+  }
+  
   onSubmit(event) {
     event.preventDefault();
     const post = {
@@ -93,11 +124,17 @@ class Navigation extends Component {
     .then(data => console.log(data))
     .catch(error => console.log(error));
   }
+  
+  onLogin(event) {
+    
+  }
 
 
   
   render() {
     return (
+      <AuthConsumer>
+      {({ isAuth, login, logout }) => (
       <Navbar className="navbar-container" bg="none" variant="dark" expand="lg">
         <Navbar.Brand className="name" href="/">
           <img src={require("./LOGO.png")}></img>
@@ -113,10 +150,10 @@ class Navigation extends Component {
             <Nav.Link className="navlink" href="/case_study">
               <p>Case Studies</p>
             </Nav.Link>
-            <Nav.Link className="navlink" onClick={this.handleShow} >
+            <Nav.Link className="navlink" onClick={this.handleShowContactUs} >
               <p>Contact us</p>
             </Nav.Link>
-            <Modal size="lg" show={this.state.show} onHide={this.handleClose}>
+            <Modal size="lg" show={this.state.showContactUs} onHide={this.handleCloseContactUs}>
               <Modal.Header closeButton>
                 <Modal.Title>Contact Us</Modal.Title>
               </Modal.Header> 
@@ -187,7 +224,7 @@ class Navigation extends Component {
                                 value={this.state.message}
                                 onChange={this.changeMessage}/>
                 </Form.Group>
-                <Button variant="secondary" onClick={this.handleClose} type="submit">
+                <Button variant="secondary" onClick={this.handleCloseContactUs} type="submit">
                   Submit
                 </Button>
                
@@ -198,15 +235,61 @@ class Navigation extends Component {
                 
               </Modal.Footer>
             </Modal>
-            <Nav.Link className="navlink" >
+            
+            {isAuth ? (
+              <React.Fragment>
+              <Nav.Link className="navlink">
+                <Link to="/user/dashboard">
+                  <p>Dashboard</p>
+                </Link>   
+              </Nav.Link>
+              <Nav.Link className="navlink" onClick={logout}>
+                <p>Logout</p>  
+              </Nav.Link>
+              </React.Fragment>
+            ) : (
+            <React.Fragment>
+            <Nav.Link className="navlink" onClick={this.handleShowLogin} >
               <p>Login</p>
             </Nav.Link>
+            <Modal size="lg" show={this.state.showLogin} onHide={this.handleCloseLogin}>
+              <Modal.Header closeButton>
+                <Modal.Title>Login</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <form onSubmit={login}>
+                  <Form.Group controlId="formLoginEmail">
+                    <Form.Label>Your Email</Form.Label>
+                    <Form.Control required
+                                  type="email"
+                                  placeholder="e.g. antonypym@accenture.com"
+                                  value={this.state.loginEmail}
+                                  onChange={this.changeLoginEmail}/>
+                  </Form.Group>
+                  <Form.Group controlId="formLoginPassword">
+                    <Form.Label>Your Password</Form.Label>
+                    <Form.Control required
+                                  type="password"
+                                  value={this.state.loginPassword}
+                                  onChange={this.changeLoginPassword}/>
+                  </Form.Group>
+                  <Button variant="secondary" onClick={this.handleCloseLogin} type="login">
+                    Submit
+                  </Button>
+                </form>
+              </Modal.Body>
+            </Modal>
             <Nav.Link className="navlink" >
               <p>Register</p>
             </Nav.Link>
+            </React.Fragment>
+            )}
+
           </Nav>
         </Navbar.Collapse>
       </Navbar>
+      )}
+      </AuthConsumer>
     )
   }
 }
