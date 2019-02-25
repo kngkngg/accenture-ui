@@ -24,6 +24,7 @@ class Navigation extends Component {
     this.changeTopic = this.changeTopic.bind(this);
     this.changeMessage = this.changeMessage.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.onLogin = this.onLogin.bind(this);
     this.changeLoginEmail = this.changeLoginEmail.bind(this);
     this.changeLoginPassword = this.changeLoginPassword.bind(this);
     
@@ -126,7 +127,11 @@ class Navigation extends Component {
   }
   
   onLogin(event) {
-    
+    event.preventDefault();
+    axios.post('getToken', {
+      loginEmail: this.state.loginEmail,
+      loginPassword: this.state.loginPassword
+    }).then(res => localStorage.setItem('cool-jwt', res.data));
   }
 
 
@@ -273,7 +278,7 @@ class Navigation extends Component {
                                   value={this.state.loginPassword}
                                   onChange={this.changeLoginPassword}/>
                   </Form.Group>
-                  <Button variant="secondary" onClick={this.handleCloseLogin} type="login">
+                  <Button variant="secondary" onClick={this.handleCloseLogin} type="submit">
                     Submit
                   </Button>
                 </form>

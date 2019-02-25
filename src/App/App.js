@@ -19,7 +19,7 @@ class App extends Component {
           <AuthProvider>
             <Navigation />
             <Switch>
-              <Route path='/' component={Home}/>
+              <Route exact path='/' component={Home}/>
               <ProtectedRoute path='/user/dashboard' component={UserDashboard}/>
             </Switch>
           </AuthProvider>

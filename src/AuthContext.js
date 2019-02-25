@@ -7,11 +7,13 @@ class AuthProvider extends Component {
 
   constructor(props) {
     super(props);
+    
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
   }
 
-  login() {
+  login(event) {
+    event.preventDefault();
     setTimeout(() => this.setState({isAuth: true}), 1000);
   }
 
