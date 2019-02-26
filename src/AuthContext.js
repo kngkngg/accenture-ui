@@ -1,33 +1,76 @@
 import React, {Component} from 'react';
+import axios from "axios";
+const Axios = axios.create();
+
+Axios.interceptors.request.use((config)=>{
+    const token = localStorage.getItem("token");
+    config.headers.Authorization = `Bearer ${token}`;
+    return config;
+})
 
 const AuthContext = React.createContext();
 
-class AuthProvider extends Component {
-  state = {isAuth: false};
+var API_URL = 'http://10.12.185.9:3000/'
+
+export class AuthProvider extends Component {
 
   constructor(props) {
     super(props);
+    this.state = { 
+      user: (localStorage.getItem("user") || {}),
+      token: (localStorage.getItem("token") || ""),
+    }
     
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
+    this.register = this.register.bind(this)
   }
 
-  login(event) {
-    event.preventDefault();
-    setTimeout(() => this.setState({isAuth: true}), 1000);
+  login = (credentials) => {
+    return Axios.post(API_URL+'auth/login', credentials)
+      .then(response => {
+        const { token, user } = response.data;
+        localStorage.setItem("token", token);
+        localStorage.setItem("user", JSON.stringify(user));
+        this.setState({
+          user,
+          token,
+        });
+        return response;
+    })
   }
 
-  logout() {
-    this.setState({isAuth: false});
+  logout = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    this.setState({
+      user: {},
+      token: '',
+    })
+  }
+
+  register = (userInfo) => {
+    return axios.post('http://10.12.185.9:3000/auth/signup', userInfo)
+      .then(response => {
+        const { user, token } = response.data;
+        localStorage.setItem("token", token);
+        localStorage.setItem("user", JSON.stringify(user));
+        this.setState({
+          user,
+          token
+        });
+        return response;
+    })
   }
 
   render() {
-    return(
+    return (
       <AuthContext.Provider
         value={{ 
-          isAuth: this.state.isAuth,
           login: this.login,
-          logout: this.logout}}
+          logout: this.logout,
+          register: this.register,
+          ...this.state}}
       >
         {this.props.children}
       </AuthContext.Provider>
@@ -35,6 +78,21 @@ class AuthProvider extends Component {
   }
 }
 
-const AuthConsumer = AuthContext.Consumer;
-
-export { AuthProvider, AuthConsumer }
+export const withContext = Component => {
+  return props => {
+    return (
+      <AuthContext.Consumer>
+        {
+          globalState => {
+            return (
+              <Component
+                {...globalState}
+                {...props}
+              />
+            )
+          }
+        }
+      </AuthContext.Consumer>
+    )
+  }
+}
