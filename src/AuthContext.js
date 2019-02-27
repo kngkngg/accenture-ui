@@ -14,8 +14,8 @@ var API_URL = 'http://10.12.185.9:3000/'
 
 export class AuthProvider extends Component {
 
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = { 
       user: (localStorage.getItem("user") || {}),
       token: (localStorage.getItem("token") || ""),
@@ -27,7 +27,7 @@ export class AuthProvider extends Component {
   }
 
   login = (credentials) => {
-    return Axios.post(API_URL+'auth/login', credentials)
+    return axios.post('http://10.12.185.9:3000/auth/login', credentials)
       .then(response => {
         const { token, user } = response.data;
         localStorage.setItem("token", token);

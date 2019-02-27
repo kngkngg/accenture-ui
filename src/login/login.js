@@ -12,14 +12,16 @@ class Login extends Component {
     
     this.handleShowLogin = this.handleShowLogin.bind(this);
     this.handleCloseLogin = this.handleCloseLogin.bind(this);
+    this.handleShowError = this.handleShowError.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.onLogin = this.onLogin.bind(this);
 
     
     this.state = {
       showLogin: false,
-      loginEmail: '',
-      loginPassword: '',
-      errorMessage: ''
+      loginEmail: "",
+      loginPassword: "",
+      errorMessage: ""
     }
   }
   
@@ -39,14 +41,31 @@ class Login extends Component {
     this.setState({ showLogin: true });
  
   }
+
+  handleShowError() {
+    if (this.state.errorMessage !== "") {
+      this.setState({ showLogin: true })
+    } else {
+      this.setState({ showLogin: false })
+    }
+  }
   
   onLogin = (e) => {
+    const data = {
+      loginEmail: this.state.loginEmail,
+      loginPassword: this.state.loginPassword
+    }
     e.preventDefault();
-    this.props.login(this.state)
+    this.props.login(data)
+      .then(res => console.log(res.json()))
       .then(() => this.props.history.push("/user/dashboard"))
-      .catch(err => {
-        this.setState({errorMessage: err.response.data.message})
-    })
+      .catch((res) => {
+        this.setState({errorMessage: res.response.data.error})
+    });
+    console.log(this.state.errorMessage);
+
+    
+
   }
   
   render() {
@@ -78,10 +97,15 @@ class Login extends Component {
                               value={this.state.loginPassword}
                               onChange={this.handleChange}/>
               </Form.Group>
-              <Button variant="secondary" onClick={this.handleCloseLogin} type="submit">
+              {
+                this.state.errorMessage &&
+                <p style={{color: "red"}}>{this.state.errorMessage}</p>
+              } 
+              <Button variant="secondary" onClick={this.handleShowError} type="submit">
                 Submit
               </Button>
             </form>
+
           </Modal.Body>
         </Modal>
       </React.Fragment>

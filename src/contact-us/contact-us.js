@@ -20,8 +20,6 @@ class ContactUs extends Component {
       showContactUs: false,
       name: '',
       email: '',
-      loginEmail: '',
-      loginPassword: '',
       contact: '',
       topic: '',
       message: '',

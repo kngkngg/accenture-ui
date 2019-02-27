@@ -128,7 +128,7 @@ class Navigation extends Component {
                   <p>Dashboard</p>
                 </Link>   
               </Nav.Link>
-              <Nav.Link className="navlink" onClick={() => this.props.logout}>
+              <Nav.Link className="navlink" onClick={this.props.logout}>
                 <p>Logout</p>  
               </Nav.Link>
               </React.Fragment>

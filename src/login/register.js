@@ -54,11 +54,19 @@ class Register extends Component {
 
   onRegister = (e) => {
     e.preventDefault();
-    this.props.register(this.state)
+    const payload = {
+      registerFirstName: this.state.registerFirstName,
+      registerLastName: this.state.registerLastName,
+      registerEmail: this.state.registerEmail,
+      registerPassword: this.state.registerPassword
+    }
+    this.props.register(payload)
       .then(() => this.props.history.push("/user/dashboard"))
-      .catch(err => {
-        this.setState({errorMessage: err.response.data.message})
-    })
+      .catch((err) => {
+        this.setState({errorMessage: err.response.data.error})
+      
+    });
+    console.log(this.state.errorMessage);
   }
   
   render() {
