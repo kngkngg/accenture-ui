@@ -43,25 +43,32 @@ class Login extends Component {
   }
 
   handleShowError() {
-    if (this.state.errorMessage !== "") {
-      this.setState({ showLogin: true })
-    } else {
+    if (this.state.errorMessage === "") {
       this.setState({ showLogin: false })
+    } else {
+      
     }
   }
   
   onLogin = (e) => {
-    const data = {
+    const payload = {
       loginEmail: this.state.loginEmail,
       loginPassword: this.state.loginPassword
     }
     e.preventDefault();
-    this.props.login(data)
-      .then(res => console.log(res.json()))
-      .then(() => this.props.history.push("/user/dashboard"))
-      .catch((res) => {
-        this.setState({errorMessage: res.response.data.error})
+    var loginEmail = this.state.loginEmail;
+    if (loginEmail.includes("@accenture")) {
+      console.log("true");
+      this.props.adminLogin(payload);
+    } else {
+      console.log("false");
+      this.props.login(payload)
+        .then(res => console.log(res.json()))
+        .catch((err) => {
+          this.setState({errorMessage: err.response.data.error})
     });
+    }
+    
     console.log(this.state.errorMessage);
 
     
@@ -101,7 +108,7 @@ class Login extends Component {
                 this.state.errorMessage &&
                 <p style={{color: "red"}}>{this.state.errorMessage}</p>
               } 
-              <Button variant="secondary" onClick={this.handleShowError} type="submit">
+              <Button variant="secondary" onClick={this.state.errorMessage ? (this.handleCloseLogin) : (this.handleShowLogin)} type="submit">
                 Submit
               </Button>
             </form>

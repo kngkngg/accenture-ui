@@ -19,11 +19,19 @@ export class AuthProvider extends Component {
     this.state = { 
       user: (localStorage.getItem("user") || {}),
       token: (localStorage.getItem("token") || ""),
+      admin: false
     }
     
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
-    this.register = this.register.bind(this)
+    this.register = this.register.bind(this);
+    this.adminLogin = this.adminLogin.bind(this);
+  }
+   
+  adminLogin = (credentials) => {
+    this.setState({
+      admin: true
+    });
   }
 
   login = (credentials) => {
@@ -70,6 +78,7 @@ export class AuthProvider extends Component {
           login: this.login,
           logout: this.logout,
           register: this.register,
+          adminLogin: this.adminLogin,  
           ...this.state}}
       >
         {this.props.children}

@@ -8,6 +8,7 @@ import Home from '../home/home';
 import { AuthProvider } from '../AuthContext';
 import UserDashboard from '../dashboard/user-dashboard';
 import ProtectedRoute from '../ProtectedRoute';
+import AdminLogin from '../admin-login/admin-login';
 
 
 
@@ -19,11 +20,13 @@ class App extends Component {
           <AuthProvider>
             <Navigation />
             <Switch>
-              <Route exact path='/' component={Home}/>
-              <ProtectedRoute path='/user/dashboard' component={UserDashboard}/>
+            <Route exact path='/' component={Home}/>
+            <Route path='/admin_login' component={AdminLogin} />
+            <ProtectedRoute path='/user/dashboard' component={UserDashboard}/>
             </Switch>
           </AuthProvider>
         </Router>
+
       </div>
     );
   }

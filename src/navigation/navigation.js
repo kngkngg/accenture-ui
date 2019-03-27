@@ -44,12 +44,23 @@ class Navigation extends Component {
 
   onLogin(event) {
     event.preventDefault();
-    this.props.login({loginEmail: this.state.loginEmail,
-                      loginPassword: this.state.loginPassword})
+    const payload = {
+      loginEmail: this.state.loginEmail,
+      loginPassword: this.state.loginPassword
+    }
+    var loginEmail = this.state.loginEmail;
+    if (loginEmail.includes("@accenture")) {
+      console.log("true");
+      this.props.adminLogin(payload);
+    } else {
+      console.log("false");
+      this.props.login(payload)
           .then(() => this.props.history.push("/user/dashboard"))
-          .catch(err => {
-            this.setState({errorMessage: err.response.data.message})
-    })
+//          .catch(err => {
+//            this.setState({errorMessage: err.response.data.message})
+//      })
+    }
+    
   }
   
   onRegister(event) {
@@ -105,6 +116,7 @@ class Navigation extends Component {
   render() {
     return (
       <React.Fragment>
+      {!this.props.admin && 
       <Navbar className="navbar-container" bg="none" variant="dark" expand="lg">
         <Navbar.Brand className="name" href="/">
           <img src={require("./LOGO.png")}></img>
@@ -141,7 +153,7 @@ class Navigation extends Component {
 
           </Nav>
         </Navbar.Collapse>
-      </Navbar>
+      </Navbar>}
 
       </React.Fragment>
     )

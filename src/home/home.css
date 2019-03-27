@@ -13,5 +13,13 @@
 
 .words-carousel {
   z-index: 100;
- 
+}
+
+.business-image, .aboutus-image, .usecase1-image,
+.usecase2-image, .usecase3-image, .casestudy-image, .footer-image {
+  width: 100%;
+}
+
+.admin{
+  background: #29292B;
 }
