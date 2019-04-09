@@ -60,7 +60,7 @@ class Login extends Component {
     var loginEmail = this.state.loginEmail;
     if (loginEmail.includes("@accenture")) {
       this.props.adminLogin(this.state)
-      this.props.history.push("/admin/dashboard/admin-dashboard");    
+      this.props.history.push("/admin/dashboard/");    
         //.catch(err => {
         //  this.setState({errorMessage: err.response.data.message})
         //});

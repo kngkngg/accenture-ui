@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import axios from "axios";
+import { throws } from 'assert';
 const Axios = axios.create();
 
 Axios.interceptors.request.use((config)=>{
@@ -19,19 +20,28 @@ export class AuthProvider extends Component {
     this.state = { 
       user: (localStorage.getItem("user") || {}),
       token: (localStorage.getItem("token") || ""),
-      admin: false
+      admin: false,
+      sidebar: 'dashboard'
     }
     
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
     this.register = this.register.bind(this);
     this.adminLogin = this.adminLogin.bind(this);
+    this.goToDashboard = this.goToDashboard.bind(this);
+    this.goToRequests = this.goToRequests.bind(this);
+  }
+
+  componentDidMount() {
+    localStorage.removeItem("admin");
   }
    
   adminLogin = (credentials) => {
     this.setState({
       admin: true
     });
+    localStorage.setItem("admin", JSON.stringify("true"));
+    //localStorage.removeItem("admin");
     //console.log("Admin is logged in: " + this.state.admin);
   }
 
@@ -72,6 +82,14 @@ export class AuthProvider extends Component {
     })
   }
 
+  goToDashboard = () => {
+    this.setState({sidebar: "dashboard"})
+  }
+
+  goToRequests = () => {
+    this.setState({sidebar: "requests"})
+  }
+
   render() {
     return (
       <AuthContext.Provider
@@ -79,7 +97,9 @@ export class AuthProvider extends Component {
           login: this.login,
           logout: this.logout,
           register: this.register,
-          adminLogin: this.adminLogin,  
+          adminLogin: this.adminLogin,
+          goToDashboard: this.goToDashboard,
+          goToRequests: this.goToRequests,  
           ...this.state}}
       >
         {this.props.children}
