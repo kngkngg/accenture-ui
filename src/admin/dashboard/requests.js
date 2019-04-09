@@ -53,7 +53,7 @@ class Requests extends Component {
                   <td>Urgent</td>
                 </tr>
               </tbody>
-            </Table>;
+            </Table>
           </Tab>
           <Tab eventKey="new-tickets" title="New Tickets">
           

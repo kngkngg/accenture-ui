@@ -21,6 +21,7 @@ export class AuthProvider extends Component {
       user: (localStorage.getItem("user") || {}),
       token: (localStorage.getItem("token") || ""),
       admin: false,
+      user: false,
       sidebar: 'dashboard'
     }
     
@@ -28,36 +29,40 @@ export class AuthProvider extends Component {
     this.logout = this.logout.bind(this);
     this.register = this.register.bind(this);
     this.adminLogin = this.adminLogin.bind(this);
-    this.goToDashboard = this.goToDashboard.bind(this);
-    this.goToRequests = this.goToRequests.bind(this);
   }
 
-  componentDidMount() {
-    localStorage.removeItem("admin");
-  }
+  // componentDidMount() {
+  //   localStorage.removeItem("admin");
+  // }
    
   adminLogin = (credentials) => {
     this.setState({
       admin: true
     });
-    localStorage.setItem("admin", JSON.stringify("true"));
+    //localStorage.setItem("admin", JSON.stringify("true"));
     //localStorage.removeItem("admin");
     //console.log("Admin is logged in: " + this.state.admin);
   }
 
   login = (credentials) => {
-    return axios.post('http://10.12.185.9:3000/auth/login', credentials)
-      .then(response => {
-        const { token, user } = response.data;
-        localStorage.setItem("token", token);
-        localStorage.setItem("user", JSON.stringify(user));
-        this.setState({
-          user,
-          token,
-        });
-        return response;
-    })
+    this.setState({
+      user: true
+    });
   }
+
+  // login = (credentials) => {
+  //   return axios.post('http://10.12.185.9:3000/auth/login', credentials)
+  //     .then(response => {
+  //       const { token, user } = response.data;
+  //       localStorage.setItem("token", token);
+  //       localStorage.setItem("user", JSON.stringify(user));
+  //       this.setState({
+  //         user,
+  //         token,
+  //       });
+  //       return response;
+  //   })
+  // }
 
   logout = () => {
     localStorage.removeItem("user");
@@ -82,13 +87,7 @@ export class AuthProvider extends Component {
     })
   }
 
-  goToDashboard = () => {
-    this.setState({sidebar: "dashboard"})
-  }
 
-  goToRequests = () => {
-    this.setState({sidebar: "requests"})
-  }
 
   render() {
     return (

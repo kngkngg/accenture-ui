@@ -34,7 +34,7 @@ class AdminSidebar extends Component {
     render() {
         return (
             <React.Fragment>
-            {this.isAdminLoggedIn() &&
+            {(this.props.admin || this.props.user) &&
             <Sidebar
                 sidebar={
                 <Nav defaultActiveKey="/admin/dashboard" as="ul" className="flex-column">

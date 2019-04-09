@@ -78,6 +78,9 @@ class Login extends Component {
     // //     .catch((err) => {
     // //       this.setState({errorMessage: err.response.data.error})
     // // });
+    } else {
+      this.props.login(this.state);
+      this.props.history.push("/user/dashboard/");
     }
     
 

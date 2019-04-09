@@ -118,7 +118,7 @@ class Navigation extends Component {
   render() {
     return (
       <React.Fragment>
-      {!this.props.admin && 
+      {((!this.props.admin && !this.props.user)) && 
       <Navbar className="navbar-container" bg="none" variant="dark" expand="lg">
         <Navbar.Brand className="name" href="/">
           <img src={require("./LOGO.png")}></img>
