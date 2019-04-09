@@ -32,6 +32,7 @@ export class AuthProvider extends Component {
     this.setState({
       admin: true
     });
+    //console.log("Admin is logged in: " + this.state.admin);
   }
 
   login = (credentials) => {

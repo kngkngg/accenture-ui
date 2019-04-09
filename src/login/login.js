@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withContext } from '../AuthContext';
+import { withRouter } from 'react-router-dom';
 
 import { Nav } from 'react-bootstrap';
 import { Modal } from 'react-bootstrap/';
@@ -58,18 +59,28 @@ class Login extends Component {
     e.preventDefault();
     var loginEmail = this.state.loginEmail;
     if (loginEmail.includes("@accenture")) {
-      console.log("true");
-      this.props.adminLogin(payload);
-    } else {
-      console.log("false");
-      this.props.login(payload)
-        .then(res => console.log(res.json()))
-        .catch((err) => {
-          this.setState({errorMessage: err.response.data.error})
-    });
+      this.props.adminLogin(this.state)
+      this.props.history.push("/admin/dashboard/admin-dashboard");    
+        //.catch(err => {
+        //  this.setState({errorMessage: err.response.data.message})
+        //});
+        
+        //.catch((err) => console.log(err));
+        // .catch((err) => {
+        //   this.setState({errorMessage: err.response.data.error})
+        // });
+        
+        
+    // } else {
+    //   console.log("false");
+    //   this.props.login(payload)
+    //     // .then(res => console.log(res.json()))
+    // //     .catch((err) => {
+    // //       this.setState({errorMessage: err.response.data.error})
+    // // });
     }
     
-    console.log(this.state.errorMessage);
+
 
     
 
@@ -120,4 +131,4 @@ class Login extends Component {
   }
 }
 
-export default withContext(Login);
+export default withRouter(withContext(Login));

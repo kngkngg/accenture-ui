@@ -7,6 +7,7 @@ import Navigation from '../navigation/navigation';
 import Home from '../home/home';
 import { AuthProvider } from '../AuthContext';
 import UserDashboard from '../dashboard/user-dashboard';
+import AdminDashboard from '../admin/dashboard/admin-dashboard';
 import ProtectedRoute from '../ProtectedRoute';
 import AdminLogin from '../admin-login/admin-login';
 
@@ -23,6 +24,7 @@ class App extends Component {
             <Route exact path='/' component={Home}/>
             <Route path='/admin_login' component={AdminLogin} />
             <ProtectedRoute path='/user/dashboard' component={UserDashboard}/>
+            <ProtectedRoute path='/admin/dashboard/admin-dashboard' component={AdminDashboard}/>
             </Switch>
           </AuthProvider>
         </Router>

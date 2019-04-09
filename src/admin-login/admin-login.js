@@ -40,12 +40,17 @@ class AdminLogin extends Component {
     }
     e.preventDefault();
     this.props.adminLogin(payload);
+    this.props.history.push('/user/dashboard');
+    //.then(() => this.props.history.push('/'))
+    //.catch(err => {
+    //  this.setState({errorMessage: err.response.data.message})
+    //});
 //    this.props.adminLogin(payload)
 //      .then(res => console.log(res.json()))
 //      .catch((err) => {
 //        this.setState({errorMessage: err.response.data.error})
 //    });
-    console.log(this.state.errorMessage);
+  
   }
   
   render() {

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import'./navigation.css';
 import { Navbar } from 'react-bootstrap';
 import { Nav } from 'react-bootstrap';
@@ -51,11 +52,12 @@ class Navigation extends Component {
     var loginEmail = this.state.loginEmail;
     if (loginEmail.includes("@accenture")) {
       console.log("true");
-      this.props.adminLogin(payload);
+      this.props.adminLogin(payload)
+        .then(() => this.props.history.push("/admin_login"));
     } else {
       console.log("false");
       this.props.login(payload)
-          .then(() => this.props.history.push("/user/dashboard"))
+          .then(() => this.props.history.push("/user/dashboard"));
 //          .catch(err => {
 //            this.setState({errorMessage: err.response.data.message})
 //      })

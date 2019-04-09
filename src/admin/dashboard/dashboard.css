@@ -1,0 +1,15 @@
+.dashboard-container {
+    background: #F7F7F9;
+    padding: 30px;
+}
+
+.specific-ticket-info {
+    width: 25%;
+    border-style: solid;
+    border-color: gray;
+}
+
+.fake-graph {
+    margin: auto;
+    padding: 40px;
+}

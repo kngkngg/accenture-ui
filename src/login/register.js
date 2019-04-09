@@ -61,12 +61,12 @@ class Register extends Component {
       registerPassword: this.state.registerPassword
     }
     this.props.register(payload)
-      .then(() => this.props.history.push("/user/dashboard"))
-      .catch((err) => {
-        this.setState({errorMessage: err.response.data.error})
+      .then(() => this.props.history.push("/admin_login"))
+    //   .catch((err) => {
+    //     this.setState({errorMessage: err.response.data.error})
       
-    });
-    console.log(this.state.errorMessage);
+    // });
+    console.log("Registered!");
   }
   
   render() {

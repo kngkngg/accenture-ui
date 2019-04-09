@@ -5,7 +5,7 @@ import {withContext} from './AuthContext';
 function ProtectedRoute(props) {
   const { component: Component, ...rest } = props;
   return (
-    props.token ? 
+    props.admin ? 
       <Route {...rest} component={Component} /> :
       <Redirect to="/" />
   )
