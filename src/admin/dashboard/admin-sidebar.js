@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Sidebar from 'react-sidebar';
+import { StickyContainer, Sticky } from 'react-sticky';
 import { withContext } from '../../AuthContext';
 import { Nav } from 'react-bootstrap';
 

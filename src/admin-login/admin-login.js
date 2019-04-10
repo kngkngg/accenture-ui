@@ -4,35 +4,35 @@ import { withContext } from '../AuthContext';
 import { Form } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 import { Row } from 'react-bootstrap';
-import { Col } from 'react-bootstrap'; 
+import { Col } from 'react-bootstrap';
 
 import './admin-login.css';
 
 // TODO: ADMIN LOGIN AND CSS
 
 class AdminLogin extends Component {
-  
+
   constructor(props, context) {
     super(props, context);
-    
+
     this.onAdminLogin = this.onAdminLogin.bind(this);
     this.handleChange = this.handleChange.bind(this);
 
-    
+
     this.state = {
       errorMessage: '',
       adminLoginEmail: '',
       adminLoginPassword: ''
     }
   }
-  
+
   handleChange = (e) => {
     const { name, value } = e.target;
     this.setState({
       [name]: value
     });
   }
-  
+
   onAdminLogin = (e) => {
     const payload = {
       adminLoginEmail: this.state.adminLoginEmail,
@@ -40,7 +40,7 @@ class AdminLogin extends Component {
     }
     e.preventDefault();
     this.props.adminLogin(payload);
-    this.props.history.push('/user/dashboard');
+    this.props.history.push('/admin/requests');
     //.then(() => this.props.history.push('/'))
     //.catch(err => {
     //  this.setState({errorMessage: err.response.data.message})
@@ -50,9 +50,9 @@ class AdminLogin extends Component {
 //      .catch((err) => {
 //        this.setState({errorMessage: err.response.data.error})
 //    });
-  
+
   }
-  
+
   render() {
     return (
       <div className="admin-login-container">
@@ -67,7 +67,7 @@ class AdminLogin extends Component {
                             type="email"
                             placeholder="e.g. antonypym@accenture.com"
                             value={this.state.adminLoginEmail} onChange={this.handleChange}/>
-            </Form.Group> 
+            </Form.Group>
             <Col md={3} />
           </Form.Row>
           <Form.Row>

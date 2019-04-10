@@ -3,12 +3,14 @@ import './home.css';
 import { Nav } from 'react-bootstrap';
 import Image from 'react-bootstrap/Image';
 import Carousel from 'react-bootstrap/Carousel';
-
+import Navigation from '../navigation/navigation.js';
 class Home extends Component {
   render () {
     return (
       <React.Fragment>
+      <Navigation />
         <div className="image-crop">
+
           <Image className="teamwork-image" src={require("./achievement-agreement-arms-1068523.jpg")} />
           <Carousel className="words-carousel">
             <Carousel.Item>

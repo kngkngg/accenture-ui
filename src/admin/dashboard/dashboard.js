@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withContext } from '../../AuthContext';
 import axios from 'axios';
+import {Navbar,Nav} from 'react-bootstrap';
 
 import './dashboard.css';
 import { Row, Col, Card, Image } from 'react-bootstrap';
@@ -11,7 +12,29 @@ import { Cards } from "../components/Card/Card.jsx";
 import {
     LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,PieChart, Pie, Sector, Cell,
   } from 'recharts';
+const datapie = [
+      { name: 'Pending', value: 400 },
+      { name: 'Closed', value: 300 },
+      { name: 'Overdue', value: 300 },
+      { name: 'New', value: 200 },
+    ];
 
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+
+const RADIAN = Math.PI / 180;
+  const renderCustomizedLabel = ({
+      cx, cy, midAngle, innerRadius, outerRadius, percent, index,
+    }) => {
+      const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+      const x = cx + radius * Math.cos(-midAngle * RADIAN);
+      const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+      return (
+        <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
+          {`${(percent * 100).toFixed(0)}%`}
+        </text>
+      );
+    };
 const data = [
     {
       name: 'Jan', GeneralEnquiry: 400, PaymentIssue: 240, JobApplication: 240, Others:300
@@ -134,12 +157,27 @@ class Dashboard extends Component {
 
     render() {
         return (
+          <div>
+
+          <div>
+          <Navbar bg="dark" variant="dark" >
+              <Navbar.Brand href="/">Admin Dashboard</Navbar.Brand>
+              <Nav className="mr-auto">
+                <Nav.Link href="/admin/requests">View Tickets</Nav.Link>
+                <Nav.Link href="/admin/dashboard">View Statistics</Nav.Link>
+
+              </Nav>
+              <a href="/" style={{color:'#fff'}}>Log out</a>
+            </Navbar>
+          </div>
             <div className="dashboard-container">
+              <p>Welcome back！ {this.state.name}</p>
                 <div className="tickets-info">
                   <Row>
-                    <Col md={3}>
-                      <Card style={{ width: '18rem'}}>
+                    <Col md={3} xs={6} sm={3}>
+                      <Card style={{ width: '18rem'}} >
                         <Row>
+                          <br />
                           <Col xs={5}>
                             <Image src={require("./light-bulb.png")} style={{ width: '50px'}} ></Image>
                           </Col>
@@ -152,9 +190,10 @@ class Dashboard extends Component {
                         <div>Updated in the last hour</div>
                       </Card>
                     </Col>
-                    <Col md={3}>
+                    <Col md={3} xs={6} sm={3}>
                       <Card style={{ width: '18rem'}}>
                         <Row>
+                          <br />
                           <Col xs={5}>
                             <Image src={require("./line-chart.png")} style={{ width: '50px'}} ></Image>
                           </Col>
@@ -167,7 +206,7 @@ class Dashboard extends Component {
                         <div>Last day</div>
                       </Card>
                     </Col>
-                    <Col md={3}>
+                    <Col md={3} xs={6} sm={3}>
                       <Card style={{ width: '18rem'}}>
                         <Row>
                           <Col xs={5}>
@@ -182,7 +221,7 @@ class Dashboard extends Component {
                         <div>Updated in the last hour</div>
                       </Card>
                     </Col>
-                    <Col md={3}>
+                    <Col md={3} xs={6} sm={3}>
                       <Card style={{ width: '18rem'}}>
                         <Row>
                           <Col xs={5}>
@@ -199,7 +238,7 @@ class Dashboard extends Component {
                     </Col>
                   </Row>
                 </div>
-                <p>Welcome back {this.state.name}</p>
+
                 <Row>
                     <Col>
                         <p>New Requests in the last hour</p>
@@ -217,10 +256,10 @@ class Dashboard extends Component {
                         <p>Priority Requests</p>
                         <p>{this.state.priorityRequests}</p>
                     </Col>
-                </Row> 
+                </Row>
                 <Col md={12}>
                   <div className="fake-graph">
-                    <Cards 
+                    <Cards
                         statsIcon="fa fa-history"
                         id="chartHours"
                         title="Tickets by Types"
@@ -249,8 +288,10 @@ class Dashboard extends Component {
                         }
 
                     />
-                    </div>  
+                    </div>
                   </Col>
+
+            </div>
             </div>
         )
     }

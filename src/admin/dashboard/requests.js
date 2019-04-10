@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withContext } from '../../AuthContext';
 import axios from 'axios';
+import {Navbar,Nav} from 'react-bootstrap';
 
 import { Tab, Tabs, Table } from 'react-bootstrap';
 
@@ -11,9 +12,23 @@ class Requests extends Component {
         key: 'unsolved-tickets',
       };
     }
-  
+
     render() {
       return (
+        <div>
+        <div>
+        <Navbar bg="dark" variant="dark">
+            <Navbar.Brand href="/">Admin Dashboard</Navbar.Brand>
+            <Nav className="mr-auto">
+
+               <Nav.Link href="/admin/requests">View Tickets</Nav.Link>
+               <Nav.Link href="/admin/dashboard">View Statistics</Nav.Link>
+               
+            </Nav>
+            <a href="/" style={{color:'#fff'}}>Log out</a>
+          </Navbar>
+        </div>
+        <div>
         <Tabs
           id="controlled-tab-example"
           activeKey={this.state.key}
@@ -56,12 +71,14 @@ class Requests extends Component {
             </Table>
           </Tab>
           <Tab eventKey="new-tickets" title="New Tickets">
-          
+
           </Tab>
           <Tab eventKey="updated-tickets" title="Updated Tickets" disabled>
-            
+
           </Tab>
         </Tabs>
+        </div>
+        </div>
       );
     }
   }

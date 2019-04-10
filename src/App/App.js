@@ -22,13 +22,11 @@ class App extends Component {
       <div className="App">
         <Router>
           <AuthProvider>
-            <Navigation />
-            <AdminSideBar />
             <Switch>
             <Route exact path='/' component={Home}/>
             <Route path='/admin_login' component={AdminLogin} />
             <ProtectedRoute path='/user/dashboard' component={UserDashboard}/>
-            <ProtectedRoute path='/admin/dashboard' component={Dashboard}/>
+            <Route path='/admin/dashboard' component={Dashboard}/>
             <Route path='/admin/requests' component={Requests} />
             </Switch>
           </AuthProvider>
