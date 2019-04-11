@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withContext } from '../../AuthContext';
+import RequestList from './requestList';
 import axios from 'axios';
 import {Navbar,Nav} from 'react-bootstrap';
 
@@ -10,7 +11,22 @@ class Requests extends Component {
       super(props);
       this.state = {
         key: 'unsolved-tickets',
+        results: []
       };
+
+      this.retrieveData = this.retrieveData.bind(this);
+    }
+
+    retrieveData() {
+      var API_URL = 'http://accenturesutd.herokuapp.com/admin/1/requests/urgent';
+      return axios.get(API_URL)
+        .then(({data}) => {
+          this.setState({results: data})
+        })
+    }
+
+    componentDidMount() {
+      this.retrieveData();
     }
 
     render() {
@@ -40,12 +56,12 @@ class Requests extends Component {
                 <tr>
                   <th>Subject</th>
                   <th>Requester</th>
-                  <th>Requested</th>
-                  <th>Type</th>
-                  <th>Priority</th>
+                  <th>Date</th>
+                  <th>Email</th>
+                  <th>Subject</th>
                 </tr>
               </thead>
-              <tbody>
+              {/* <tbody>
                 <tr>
                   <td>Issue</td>
                   <td>Jake</td>
@@ -67,7 +83,8 @@ class Requests extends Component {
                   <td>Incident</td>
                   <td>Urgent</td>
                 </tr>
-              </tbody>
+              </tbody> */}
+              <RequestList results={this.state.results} />
             </Table>
           </Tab>
           <Tab eventKey="new-tickets" title="New Tickets">

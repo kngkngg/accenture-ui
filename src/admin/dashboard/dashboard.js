@@ -142,7 +142,7 @@ class Dashboard extends Component {
     }
 
     retrieveDetails() {
-        var API_URL = 'http://10.12.185.9:3000/admin/fake/tix';
+        var API_URL = 'http://accenturesutd.herokuapp.com/admin/1/dashboard';
         return axios.get(API_URL)
             .then(({data}) => {
                 this.setState({
@@ -171,7 +171,7 @@ class Dashboard extends Component {
             </Navbar>
           </div>
             <div className="dashboard-container">
-              <p>Welcome back！ {this.state.name}</p>
+              <p>Welcome back {this.state.name}!</p>
                 <div className="tickets-info">
                   <Row>
                     <Col md={3} xs={6} sm={3}>
@@ -183,7 +183,7 @@ class Dashboard extends Component {
                           </Col>
                           <Col xs={7}>
                             <h4>New</h4>
-                            <h2>100</h2>
+                            <h2>{this.state.newRequests}</h2>
                           </Col>
                         </Row>
                         <hr/>
@@ -199,7 +199,7 @@ class Dashboard extends Component {
                           </Col>
                           <Col xs={7}>
                             <h4>Urgent</h4>
-                            <h2>50</h2>
+                            <h2>{this.state.urgentRequests}</h2>
                           </Col>
                         </Row>
                         <hr/>
@@ -214,7 +214,7 @@ class Dashboard extends Component {
                           </Col>
                           <Col xs={7}>
                             <h4>Unsolved</h4>
-                            <h2>120</h2>
+                            <h2>{this.state.unsolvedRequests}</h2>
                           </Col>
                         </Row>
                         <hr/>
@@ -229,7 +229,7 @@ class Dashboard extends Component {
                           </Col>
                           <Col xs={7}>
                             <h4>Priority</h4>
-                            <h2>100</h2>
+                            <h2>{this.state.priorityRequests}</h2>
                           </Col>
                         </Row>
                         <hr/>
@@ -239,7 +239,7 @@ class Dashboard extends Component {
                   </Row>
                 </div>
 
-                <Row>
+                {/* <Row>
                     <Col>
                         <p>New Requests in the last hour</p>
                         <p>{this.state.newRequests}</p>
@@ -256,7 +256,7 @@ class Dashboard extends Component {
                         <p>Priority Requests</p>
                         <p>{this.state.priorityRequests}</p>
                     </Col>
-                </Row>
+                </Row> */}
                 <Col md={12}>
                   <div className="fake-graph">
                     <Cards
