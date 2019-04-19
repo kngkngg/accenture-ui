@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withContext } from '../../AuthContext';
 import RequestList from './requestList';
+import Request from './request';
 import axios from 'axios';
 import {Navbar,Nav} from 'react-bootstrap';
 
@@ -10,23 +11,73 @@ class Requests extends Component {
     constructor(props) {
       super(props);
       this.state = {
-        key: 'unsolved-tickets',
+        key: 'urgent',
         results: []
       };
 
       this.retrieveData = this.retrieveData.bind(this);
+      this.showRequestList = this.showRequestList.bind(this);
+      this.componentDidUpdate = this.componentDidUpdate.bind(this);
+      this.formatDate = this.formatDate.bind(this);
     }
 
     retrieveData() {
-      var API_URL = 'http://accenturesutd.herokuapp.com/admin/1/requests/urgent';
-      return axios.get(API_URL)
-        .then(({data}) => {
-          this.setState({results: data})
-        })
+      var API_URL = 'http://accenturesutd.herokuapp.com/admin/4/requests/';
+      if (this.state.key === 'urgent') {
+        return axios.get((API_URL + 'urgent'))
+          .then(({data}) => {
+            this.setState({results: data.urgent})
+          })
+      } else if (this.state.key === 'new') {
+        return axios.get((API_URL + 'new'))
+          .then(({data}) => {
+            this.setState({results: data.new})
+          })
+      }
+    }
+
+    formatDate(date) {
+      var d = new Date(date),
+          month = d.getMonth(),
+          months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+          date = d.getDate(),
+          hour = d.getHours(),
+          min = d.getMinutes();
+
+      if (d.getMinutes() < 10) {
+        min = '0' + d.getMinutes();
+      }
+
+      return months[month] + " " + date + " " + hour + ":" + min; 
     }
 
     componentDidMount() {
       this.retrieveData();
+    }
+
+    componentDidUpdate() {
+      this.retrieveData();
+    }
+
+    showRequestList() {
+      return (
+        <tbody>
+          {this.state.results.map(r => (
+            <React.Fragment>
+              <Request
+                requester={r.requester}
+                topic={r.topic}
+                date_created={this.formatDate(r.date_created)}
+                user_email={r.user_email}
+                subject={r.subject}
+                message={r.message}
+                id={r.id}
+
+              />
+            </React.Fragment>
+          ))}
+        </tbody>
+      )
     }
 
     render() {
@@ -50,7 +101,7 @@ class Requests extends Component {
           activeKey={this.state.key}
           onSelect={key => this.setState({ key })}
         >
-          <Tab eventKey="unsolved-tickets" title="Unsolved Tickets">
+          <Tab eventKey="urgent" title="Urgent Tickets">
             <Table striped bordered hover>
               <thead>
                 <tr>
@@ -61,6 +112,7 @@ class Requests extends Component {
                   <th>Subject</th>
                 </tr>
               </thead>
+              
               {/* <tbody>
                 <tr>
                   <td>Issue</td>
@@ -84,11 +136,25 @@ class Requests extends Component {
                   <td>Urgent</td>
                 </tr>
               </tbody> */}
-              <RequestList results={this.state.results} />
+              {/* <RequestList results={this.state.results} /> */}
+              
+                {this.showRequestList()}
+              
             </Table>
           </Tab>
-          <Tab eventKey="new-tickets" title="New Tickets">
-
+          <Tab eventKey="new" title="New Tickets">
+            <Table striped bordered hover>
+                <thead>
+                  <tr>
+                    <th>Subject</th>
+                    <th>Requester</th>
+                    <th>Date</th>
+                  <th>Email</th>
+                  <th>Suject</th>
+                </tr>
+              </thead>
+              {this.showRequestList()}
+            </Table>
           </Tab>
           <Tab eventKey="updated-tickets" title="Updated Tickets" disabled>
 

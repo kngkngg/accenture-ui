@@ -130,7 +130,8 @@ class Dashboard extends Component {
             newRequests: '',
             unsolvedRequests: '',
             priorityRequests: '',
-            urgentRequests: ''
+            urgentRequests: '',
+            loading: true
         };
 
         this.retrieveDetails = this.retrieveDetails.bind(this);
@@ -142,7 +143,7 @@ class Dashboard extends Component {
     }
 
     retrieveDetails() {
-        var API_URL = 'http://accenturesutd.herokuapp.com/admin/1/dashboard';
+        var API_URL = 'http://accenturesutd.herokuapp.com/admin/4/dashboard';
         return axios.get(API_URL)
             .then(({data}) => {
                 this.setState({
@@ -153,12 +154,16 @@ class Dashboard extends Component {
                     urgentRequests: data.urgent
                 });
             })
+            .then(setTimeout(() => {
+              this.setState({loading: false})
+            }), 50000);
     }
 
     render() {
         return (
-          <div>
-
+          <React.Fragment>
+            {(!this.state.loading) ? 
+          (<React.Fragment>
           <div>
           <Navbar bg="dark" variant="dark" >
               <Navbar.Brand href="/">Admin Dashboard</Navbar.Brand>
@@ -292,7 +297,13 @@ class Dashboard extends Component {
                   </Col>
 
             </div>
-            </div>
+            </React.Fragment>) : ( 
+              <React.Fragment>
+                <p>Loading</p>
+              </React.Fragment>
+            )
+            }
+            </React.Fragment>
         )
     }
 }
