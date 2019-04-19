@@ -3,19 +3,19 @@ import TableRow from '../dashboard/TableRow';
 
 class TicketTable extends Component {
   render() {
-    var onProductTableUpdate = this.props.onProductTableUpdate;
+    var onTicketTableUpdate = this.props.onTicketTableUpdate;
     var rowDel = this.props.onRowDel;
     var filterText = this.props.filterText;
-    var product = this.props.products.map(function(product) {
-      if (product.subject.indexOf(filterText) === -1) {
+    var Ticket = this.props.Tickets.map(function(Ticket) {
+      if (Ticket.subject.indexOf(filterText) === -1) {
         return;
       }
       return (
         <TableRow
-          onProductTableUpdate={onProductTableUpdate}
-          product={product}
+          onTicketTableUpdate={onTicketTableUpdate}
+          Ticket={Ticket}
           onDelEvent={rowDel.bind(this)}
-          key={product.id}
+          key={Ticket.id}
         />
       );
     });
@@ -31,7 +31,7 @@ class TicketTable extends Component {
             </tr>
           </thead>
 
-          <tbody>{product}</tbody>
+          <tbody>{Ticket}</tbody>
         </table>
       </div>
     );

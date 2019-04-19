@@ -5,10 +5,10 @@ class AllTickets extends React.Component {
   constructor(props) {
     super(props);
 
-    //  this.state.products = [];
+    //  this.state.Tickets = [];
     this.state = {};
     this.state.filterText = "";
-    this.state.products = [
+    this.state.Tickets = [
       {
         id: 1,
         time: "2019/04/01 23:59pm",
@@ -44,50 +44,50 @@ class AllTickets extends React.Component {
   handleUserInput(filterText) {
     this.setState({ filterText: filterText });
   }
-  handleRowDel(product) {
-    var index = this.state.products.indexOf(product);
-    this.state.products.splice(index, 1);
-    this.setState(this.state.products);
+  handleRowDel(Ticket) {
+    var index = this.state.Tickets.indexOf(Ticket);
+    this.state.Tickets.splice(index, 1);
+    this.setState(this.state.Tickets);
   }
 
   handleAddEvent(evt) {
     var id = (+new Date() + Math.floor(Math.random() * 999999)).toString(36);
-    var product = {
+    var Ticket = {
       id: id,
       subject: "",
       time: "",
     };
-    this.state.products.push(product);
-    this.setState(this.state.products);
+    this.state.Tickets.push(Ticket);
+    this.setState(this.state.Tickets);
   }
 
-  handleProductTable(evt) {
+  handleTicketTable(evt) {
     var item = {
       id: evt.target.id,
       subject: evt.target.subject,
       value: evt.target.value
     };
-    var products = this.state.products.slice();
-    var newProducts = products.map(function(product) {
-      for (var key in product) {
-        if (key == item.subject && product.id == item.id) {
-          product[key] = item.value;
+    var Tickets = this.state.Tickets.slice();
+    var newTickets = Tickets.map(function(Ticket) {
+      for (var key in Ticket) {
+        if (key == item.subject && Ticket.id == item.id) {
+          Ticket[key] = item.value;
         }
       }
-      return product;
+      return Ticket;
     });
-    this.setState({ products: newProducts });
-    //  console.log(this.state.products);
+    this.setState({ Tickets: newTickets });
+    //  console.log(this.state.Tickets);
   }
   render() {
     return (
       <div>
 
         <TicketTable
-          onProductTableUpdate={this.handleProductTable.bind(this)}
+          onTicketTableUpdate={this.handleTicketTable.bind(this)}
           onRowAdd={this.handleAddEvent.bind(this)}
           onRowDel={this.handleRowDel.bind(this)}
-          products={this.state.products}
+          Tickets={this.state.Tickets}
           filterText={this.state.filterText}
         />
       </div>

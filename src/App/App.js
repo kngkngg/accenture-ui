@@ -13,7 +13,6 @@ import AdminLogin from '../admin-login/admin-login';
 import AdminSideBar from '../admin/dashboard/admin-sidebar';
 import Dashboard from '../admin/dashboard/dashboard';
 import Requests from '../admin/dashboard/requests';
-import ViewTickets from '../dashboard/ViewTickets';
 
 
 
@@ -25,8 +24,6 @@ class App extends Component {
           <AuthProvider>
             <Switch>
             <Route exact path='/' component={Home}/>
-            <Route exact path='/view_tickets' component={ViewTickets}/>
-
             <Route path='/admin_login' component={AdminLogin} />
             <Route path='/user/dashboard' component={UserDashboard}/>
             <Route path='/admin/dashboard' component={Dashboard}/>

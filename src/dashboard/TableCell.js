@@ -14,7 +14,7 @@ class TableCell extends React.Component {
           subject={this.props.cellData.type}
           id={this.props.cellData.id}
           value={this.props.cellData.value}
-          onChange={this.props.onProductTableUpdate}
+          onChange={this.props.onTicketTableUpdate}
         />
       </td>
     );
