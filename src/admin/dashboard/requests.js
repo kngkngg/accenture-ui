@@ -72,6 +72,7 @@ class Requests extends Component {
                 subject={r.subject}
                 message={r.message}
                 id={r.id}
+                length={this.state.results.length}
 
               />
             </React.Fragment>

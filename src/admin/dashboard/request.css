@@ -22,12 +22,77 @@
 }
 
 .convo-name {
+    display: inline;
     font-size: 16px;
     font-weight: 600;
     color: #2F3941;
+    overflow: hidden;
+    width: 100%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 0 5px 0 0;
+    
+}
+
+.convo-time {
+    display: inline;
+    font-size: 13px;
+    font-weight: 400;
+    color: #2F3941;
+    overflow: hidden;
+    width: 100%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    
 }
 
 .message-container {
     display: block;
-    width: 700px;
+    height: 80px;
+    padding: 20px 10px;
+    border: 0.1px solid;
+    border-color: #f2f2f2;
+}
+
+.message-container-new {
+    display: block;
+    background-color: #EDF7FF;    
+    height: 80px;
+    padding: 20px 10px;
+    border: 2px solid;
+    border-color: #f2f2f2;
+    border-left-color: #5293C7;
+}
+
+.new {
+    display: inline;
+    font-size: 13px;
+    color: #5293C7;
+    line-height: 20px;
+    padding: 0 0 0 5px;
+}
+
+.assign {
+    display: inline;
+    font-size: 13px;
+    line-height:  20px;
+    color: #1f73b7;
+    cursor: pointer;
+    padding: 0 0 0 3px;
+}
+
+.convo-modal {
+    max-height: 100vh;
+    overflow-y: auto;
+}
+
+.convo-submit-button {
+    display: inline;
+    float: right;
+}
+
+.all-convo-label {
+    display: block;
+    
+    
 }

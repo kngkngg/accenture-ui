@@ -25,7 +25,7 @@ class App extends Component {
             <Switch>
             <Route exact path='/' component={Home}/>
             <Route path='/admin_login' component={AdminLogin} />
-            <ProtectedRoute path='/user/dashboard' component={UserDashboard}/>
+            <Route path='/user/dashboard' component={UserDashboard}/>
             <Route path='/admin/dashboard' component={Dashboard}/>
             <Route path='/admin/requests' component={Requests} />
             </Switch>

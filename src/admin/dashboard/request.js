@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withContext } from '../../AuthContext';
 import axios from 'axios';
-import { Nav, Modal, Button, Form, Row, Col, Image } from 'react-bootstrap';
+import { Nav, Modal, Button, Form, Row, Col, Image, Dropdown, ButtonGroup, Badge } from 'react-bootstrap';
 import './request.css';
 
 class Request extends Component {
@@ -22,6 +22,7 @@ class Request extends Component {
         this.retrieveConvo = this.retrieveConvo.bind(this);
         this.showConvoList = this.showConvoList.bind(this);
         this.displayDateTime = this.displayDateTime.bind(this);
+        this.isNewMessage = this.isNewMessage.bind(this);
       }
     
       handleCloseMessage() {
@@ -49,29 +50,52 @@ class Request extends Component {
             min = d.getMinutes(),
             today_date = today.getDate(),
             today_month = today.getMonth(),
-            today_year = today.getFullYear()
+            today_year = today.getFullYear(),
+            today_hour = today.getHours(),
+            today_min = today.getMinutes()
 
         var time = hour + ":" + min;
-        if (year === today_year && month == today_month && date === today_date) {
+        if (year === today_year && month == today_month && date === today_date && hour === today_hour && min === today_min) {
           return (
-            <div className="convo-info">
+            <div className="convo-time">
+              less than a minute ago
+            </div>
+          )
+        } else if (year === today_year && month == today_month && date === today_date && hour === today_hour) {
+          return (
+            <div className="convo-time">
+              {today_hour - hour} mins ago
+            </div>
+          )
+        
+        } else if (year === today_year && month == today_month && date === today_date) {
+          return (
+            <div className="convo-time">
               Today {time}
             </div>
           )
         } else if (year === today_year && month == today_month && date === today_date - 1) {
           return (
-            <div className="convo-info">
+            <div className="convo-time">
               Yesterday {time}
             </div>
           )
         } else {
           return (
-            <div className="convo-info">
+            <div className="convo-time">
               {months[month]} {date} {time}
             </div>
           )
         }
         
+      }
+
+      isNewMessage(r) {
+        if (r.id === this.state.convo[0].id) {
+          return true;
+        } else {
+          return false;
+        }
       }
 
       submitReply(e) {
@@ -111,21 +135,53 @@ class Request extends Component {
         return (
           <React.Fragment>
             {this.state.convo.map(r =>(
-              <Row>
-                <Col xs={1}>
-                  {(r.role === "admin") ? (
-                    <Image className="accenture-logo-ticket" src={require("./admin_profile.jpg")}  roundedCircle />
-                  ) : (
-                    <Image className="accenture-logo-ticket" src={require("./avatar.png")}  roundedCircle />
-                  )}
-                </Col>
-                <Col xs={11}>
-                  <div className="title-container">
-                    <div className="message-container"><span class="convo-name">{r.name}</span> <span>{this.displayDateTime(r.date)}</span> </div>
-                    <div className="">{r.message}</div>
-                  </div>
-                </Col>
-              </Row>
+              this.isNewMessage(r) ? (
+                <React.Fragment>
+                <div className="all-convo-label">
+                  <span className="convo-name">All   </span>
+                  <Badge pill variant="primary">
+                    {this.state.convo.length} 
+                  </Badge>
+                </div> 
+                <div className="message-container-new">
+                <Row>
+                  <Col xs={1}>
+                    {(r.role === "admin") ? (
+                      <Image className="accenture-logo-ticket" src={require("./admin_profile.jpg")}  roundedCircle />
+                    ) : (
+                      <Image className="accenture-logo-ticket" src={require("./avatar.png")}  roundedCircle />
+                    )}
+                  </Col>
+                  <Col xs={11}>
+                    <div className="convo-name">{r.name}  </div>
+                    {this.displayDateTime(r.date)}
+                    <div className="new">NEW</div>
+                    <div className="assign">(assign)</div>
+                    <div>{r.message}</div>            
+                  </Col>
+                </Row>
+              </div>
+              </React.Fragment>
+              ) : (
+                <div className="message-container">
+                <Row>
+                  <Col xs={1}>
+                    {(r.role === "admin") ? (
+                      <Image className="accenture-logo-ticket" src={require("./admin_profile.jpg")}  roundedCircle />
+                    ) : (
+                      <Image className="accenture-logo-ticket" src={require("./avatar.png")}  roundedCircle />
+                    )}
+                  </Col>
+                  <Col xs={11}>
+                    <div className="convo-name">{r.name}  </div>
+                    {this.displayDateTime(r.date)}
+                    <div className="assign">(assign)</div>
+                    <div>{r.message}</div>            
+                  </Col>
+                </Row>
+              </div>
+              )
+
             ))}
           </React.Fragment>
 
@@ -170,7 +226,7 @@ class Request extends Component {
                 </Row>         
               </Modal.Title>
             </Modal.Header>
-            <Modal.Body>
+            <Modal.Body style={{'max-height': 'calc(100vh - 210px)', 'overflow-y': 'auto'}}>
               {/* <p>{this.props.message}</p> */}
               <Row>
                 <Col xs={1}>
@@ -179,17 +235,32 @@ class Request extends Component {
                 <Col xs={11}>
                   <form onSubmit={this.submitReply}>
                     <Form.Group controlId="reply">
-                      <Form.Label>Reply</Form.Label>
+                      <Form.Label>Public Reply</Form.Label>
                         <Form.Control required
                                       as="textarea"
-                                      rows="3"
+                                      rows="6"
                                       name="reply"
                                       value={this.state.reply}
                                       onChange={this.handleReply}/>
                     </Form.Group>
-                    <Button variant="primary"  type="submit">
-                      Submit
-                    </Button>
+                    {/* <div className="all-convo-label">
+                      <Badge pill variant="primary">
+                        {this.state.convo.length} 
+                      </Badge>
+                    </div> */}
+                    <div className="convo-submit-button">
+                      <Dropdown as={ButtonGroup}>
+                        <Button variant="dark" type="submit">
+                          Submit as Open
+                        </Button>
+                        <Dropdown.Toggle split variant="dark" id="dropdown-split-basic" />
+                        <Dropdown.Menu>
+                          <Dropdown.Item hred="#/action-1">Submit as Open</Dropdown.Item>
+                          <Dropdown.Item hred="#/action-2">Submit as Pending</Dropdown.Item>
+                          <Dropdown.Item hred="#/action-3">Submit as Solved</Dropdown.Item>
+                        </Dropdown.Menu>
+                      </Dropdown>
+                    </div>
                  </form>
                 </Col>
               </Row>
