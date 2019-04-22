@@ -11,6 +11,9 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import {Navbar,Nav} from 'react-bootstrap';
 import AllTickets from '../dashboard/AllTickets';
+import UserRequests from './user-requests';
+import ContactUs from './contact-us';
+import { withContext } from '../AuthContext';
 
 class UserDashboard extends Component {
   handleDelete(event){
@@ -24,15 +27,14 @@ class UserDashboard extends Component {
         <Navbar bg="dark" variant="dark">
             <Navbar.Brand href="/">User Dashboard</Navbar.Brand>
             <Nav className="mr-auto">
-              <Nav.Link href="/">Create A New Ticket</Nav.Link>
+              <ContactUs />
 
             </Nav>
             <a href="/" style={{color:'#fff'}}>Log out</a>
           </Navbar>
         </div>
-        <br />
         <div>
-          <AllTickets />
+          <UserRequests/>
         </div>
     </div>
 
@@ -40,4 +42,4 @@ class UserDashboard extends Component {
   }
 }
 
-export default (UserDashboard);
+export default withContext(UserDashboard);

@@ -56,12 +56,12 @@
 
 .message-container-new {
     display: block;
-    background-color: #EDF7FF;    
+    background-color: #ffffcc;    
     height: 80px;
     padding: 20px 10px;
     border: 2px solid;
     border-color: #f2f2f2;
-    border-left-color: #5293C7;
+    border-left-color: #ff9900;
 }
 
 .new {
@@ -93,6 +93,13 @@
 
 .all-convo-label {
     display: block;
-    
+}
+
+.popup {
+    display: block;
+    position: absolute;
+    top: 100px;
+    overflow: hidden;
+    right: 100px;
     
 }

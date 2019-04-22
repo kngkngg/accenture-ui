@@ -16,6 +16,7 @@ class Login extends Component {
     this.handleShowError = this.handleShowError.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.onLogin = this.onLogin.bind(this);
+    this.incorrectLogin = this.incorrectLogin.bind(this);
 
     
     this.state = {
@@ -50,6 +51,14 @@ class Login extends Component {
       
     }
   }
+
+  incorrectLogin() {
+    if (this.state.loginPassword.includes("adadad")) {
+      return  (
+      <div style={{color: 'red'}}>Incorrect Password!</div> 
+      )
+    }
+  }
   
   onLogin = (e) => {
     const payload = {
@@ -58,6 +67,7 @@ class Login extends Component {
     }
     e.preventDefault();
     var loginEmail = this.state.loginEmail;
+
     if (loginEmail.includes("@accenture")) {
       this.props.adminLogin(this.state)
       this.props.history.push("/admin/dashboard/");    
@@ -117,6 +127,7 @@ class Login extends Component {
                               type="password"
                               value={this.state.loginPassword}
                               onChange={this.handleChange}/>
+                {this.incorrectLogin()}
               </Form.Group>
               {
                 this.state.errorMessage &&

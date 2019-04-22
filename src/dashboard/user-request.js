@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { withContext } from '../../AuthContext';
+import { withContext } from '../AuthContext';
 import axios from 'axios';
 import { Nav, Modal, Button, Form, Row, Col, Image, Dropdown, ButtonGroup, Badge, OverlayTrigger } from 'react-bootstrap';
-import './request.css';
+import './user-request.css';
 
-class Request extends Component {
+class UserRequest extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -123,9 +123,8 @@ class Request extends Component {
         // const payload = {reply: this.state.reply}
         // return axios.post((API_URL + id + '/message'), payload)
         //   .then(this.setState({replied: true}))
-        var API_URL = "http://accenturesutd.herokuapp.com/tickets/" + this.props.id + '/admin/response';
-        const payload = {message: this.state.reply,
-                         status: this.state.status}
+        var API_URL = "http://accenturesutd.herokuapp.com/tickets/" + this.props.id + '/user/response';
+        const payload = {message: this.state.reply}
         console.log(this.state.reply)
         axios.post(API_URL, payload)
           .then(res => console.log(res))
@@ -282,7 +281,7 @@ class Request extends Component {
               {/* <p>{this.props.message}</p> */}
               <Row>
                 <Col xs={1}>
-                  <Image className="accenture-logo-ticket" src={require("./admin_profile.jpg")}  roundedCircle></Image>
+                  <Image className="accenture-logo-ticket" src={require("./avatar.png")}  roundedCircle></Image>
                 </Col>
                 <Col xs={11}>
                   <form onSubmit={this.submitReply}>
@@ -331,4 +330,4 @@ class Request extends Component {
       }
 }
 
-export default withContext(Request);
+export default withContext(UserRequest);
