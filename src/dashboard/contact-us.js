@@ -79,11 +79,11 @@ class ContactUs extends Component {
     return (
       <React.Fragment>
         <Nav.Link className="navlink" onClick={this.handleShowContactUs} >
-          <p>Contact us</p>
+          <p style={{ fontSize: '20px' }}>Submit Request</p>
         </Nav.Link>
         <Modal size="lg" show={this.state.showContactUs} onHide={this.handleCloseContactUs}>
           <Modal.Header closeButton>
-            <Modal.Title>Contact Us</Modal.Title>
+            <Modal.Title>Submit a Request</Modal.Title>
           </Modal.Header> 
           <Modal.Body>
             <form onSubmit={this.onSubmit}>
@@ -101,32 +101,12 @@ class ContactUs extends Component {
                 <Form.Control as="select"
                               value={this.state.value}
                               onChange={this.changeTopic}>
-                    <option>API DevOps</option>
-                    <option>Chart as a Service</option>
-                    <option>Recruitment Platform</option>
-                    <option>Aesop</option>
-                    <option>Travel Marketplace</option>
-                    <option>Banking Lifestyle App</option>
-                    <option>AR Car Visualizer</option>
-                    <option>AR Car Manual</option>
-                    <option>AR Gamification</option>
-                    <option>AR Theatre</option>
-                    <option>AR Menu</option>
-                    <option>AI Wealth Manager</option>
-                    <option>Multilingual Chatbot</option>
-                    <option>AI Translator</option>
-                    <option>Digital Butler</option>
-                    <option>Video Analytics</option>
-                    <option>Sentiments Analysis</option>
-                    <option>ACNAPI MFA Login</option>
-                    <option>Ticketing Platform</option>
-                    <option>Smart Lock</option>
-                    <option>Smart Home</option>
-                    <option>Smart Parking</option>
-                    <option>Smart Restaurant</option>
-                    <option>Queuing System</option>
-                    <option>IOT Led Wall</option>
-                    <option>Other</option>
+                          <option>General Enquiries</option>
+                          <option>IT Related Help</option>
+                          <option>Business Opportunities</option>
+                          <option>API Enquiries</option>
+                          <option>Career Opportunities</option>
+                          <option>Other</option>
                 </Form.Control>
               </Form.Group>
               <Form.Group controlId="formText">

@@ -46,6 +46,13 @@
     height: 100vh;
 }
 
+.convo-content-continer{
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    height: 100vh;
+}
+
 .sidebar-container {
     background: #F5F5F5;
     width: 100%;
@@ -69,5 +76,20 @@
 
 .number-of-tickets {
     float: right;
+}
+
+.convo-sidebar-title {
+    font-size: 12px;
+    font-weight: 400;
+    display: inline;
+    
+}
+
+.convo-sidebar-click {
+    
+    display: inline;
+    font-size: 12px;
+    font-weight: 400;
+
 }
 

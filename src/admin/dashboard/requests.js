@@ -3,7 +3,7 @@ import { withContext } from '../../AuthContext';
 import RequestList from './requestList';
 import Request from './request';
 import axios from 'axios';
-import {Navbar,Nav, Overlay, Card, Form, Row, Col} from 'react-bootstrap';
+import {Navbar,Nav, Overlay, Card, Form, Row, Col, Badge, OverlayTrigger, Button} from 'react-bootstrap';
 import './requests.css';
 
 import { Tab, Tabs, Table } from 'react-bootstrap';
@@ -23,7 +23,8 @@ class Requests extends Component {
         unassigned: 0,
         open: 0,
         pending: 0,
-        solved: 0
+        solved: 0,
+        deleted: 0
       };
 
       this.retrieveData = this.retrieveData.bind(this);
@@ -71,6 +72,11 @@ class Requests extends Component {
           .then(({data}) => {
             this.setState({results: data.solved})
           })
+      } else if (this.state.key === 'deleted') {
+        return axios.get((API_URL + 'deleted'))
+          .then(({data}) => {
+            this.setState({results: data.deleted})
+          })
       }
     }
 
@@ -85,6 +91,7 @@ class Requests extends Component {
           this.setState({open: data.open})
           this.setState({pending: data.pending})
           this.setState({solved: data.solved})
+          this.setState({deleted: data.deleted})
         })
     }
  
@@ -112,7 +119,6 @@ class Requests extends Component {
 
     componentDidUpdate() {
       this.retrieveData();
-
     }
 
     showPriority(r) {
@@ -154,6 +160,7 @@ class Requests extends Component {
                   subject={r.subject}
                   message={r.message}
                   id={r.id}
+                  admin_id={r.admin_id}
                   length={this.state.results.length}
                   priority={this.showPriority(r)}
                   status={r.status}
@@ -192,7 +199,7 @@ class Requests extends Component {
                 activeKey={this.state.key}
                 className="flex-column"
                 activeKey={this.state.key}
-                onSelect={key => this.setState({ key })}  
+                onSelect= {key => this.setState({ key })}  
               >
                 <div>
                   <div className="sidebar-title">Views</div>
@@ -206,6 +213,7 @@ class Requests extends Component {
                 <Nav.Link className="ticket-selection" eventKey="open"><div><span>Open tickets</span><span className="number-of-tickets">{this.state.open}</span></div></Nav.Link>
                 <Nav.Link className="ticket-selection" eventKey="pending"><div><span>Pending tickets</span><span className="number-of-tickets">{this.state.pending}</span></div></Nav.Link>
                 <Nav.Link className="ticket-selection" eventKey="solved"><div><span>Solved tickets</span><span className="number-of-tickets">{this.state.solved}</span></div></Nav.Link>
+                <Nav.Link className="ticket-selection" eventKey="deleted"><div><span>Deleted tickets</span><span className="number-of-tickets">{this.state.deleted}</span></div></Nav.Link>
               </Nav>
             </div>
 

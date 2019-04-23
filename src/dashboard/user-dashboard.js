@@ -25,7 +25,7 @@ class UserDashboard extends Component {
     <div>
         <div>
         <Navbar bg="dark" variant="dark">
-            <Navbar.Brand href="/">User Dashboard</Navbar.Brand>
+            <Navbar.Brand>User Dashboard</Navbar.Brand>
             <Nav className="mr-auto">
               <ContactUs />
 

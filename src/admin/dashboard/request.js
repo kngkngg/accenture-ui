@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withContext } from '../../AuthContext';
 import axios from 'axios';
-import { Nav, Modal, Button, Form, Row, Col, Image, Dropdown, ButtonGroup, Badge, OverlayTrigger } from 'react-bootstrap';
+import { Nav, Modal, Button, Form, Row, Col, Image, Dropdown, ButtonGroup, Badge, OverlayTrigger, Card , Popover} from 'react-bootstrap';
 import './request.css';
 
 class Request extends Component {
@@ -9,11 +9,11 @@ class Request extends Component {
         super(props);
         this.state = {
           showMessage: false,
-          replied: false,
           reply: "",
           convo:[],
           status: 'open',
           buttonColor: 'dark',
+          isDeleted: false
           
         }
     
@@ -30,6 +30,12 @@ class Request extends Component {
         this.badgeColor = this.badgeColor.bind(this);
         this.capitalize = this.capitalize.bind(this);
         this.renderTooltip = this.renderTooltip.bind(this);
+        this.restoreOrDelete = this.restoreOrDelete.bind(this);
+        this.deleteRequest = this.deleteRequest.bind(this);
+        this.restoreRequest = this.restoreRequest.bind(this);
+        this.showStatus = this.showStatus.bind(this);
+        this.showPriority = this.showPriority.bind(this);
+        this.assignTicket = this.assignTicket.bind(this);
       }
     
       handleCloseMessage() {
@@ -143,6 +149,13 @@ class Request extends Component {
           
       }
 
+      assignTicket() {
+        const payload = ({admin_id: this.props.admin_id})
+        var API_URL = "http://accenturesutd.herokuapp.com/tickets/" + this.props.id + "/assign";
+        return axios.post(API_URL, payload);
+        
+      }
+
       retrieveConvo() {
         var API_URL = "http://accenturesutd.herokuapp.com/tickets/" + this.props.id + "/convo";
         return axios.get(API_URL)
@@ -224,6 +237,26 @@ class Request extends Component {
         return uppercaseFirstLetter + string.slice(1);
       }
 
+      showStatus(status) {
+        if (status === 'open') {
+          return <Badge variant="danger">Open</Badge>
+        } else if (status === 'pending') {
+          return <Badge variant="info">Pending</Badge>
+        } else if (status === 'solved') {
+          return <Badge variant="secondary">Solved</Badge>
+        } else {
+          return <Badge variant="dark">Deleted</Badge>
+        }
+      }
+
+      showPriority(priority) {
+        if (priority === true) {
+          return 'Urgent'
+        } else {
+          return 'Normal'
+        }
+      }
+
       componentDidUpdate() {
         this.retrieveConvo();
       }
@@ -233,37 +266,117 @@ class Request extends Component {
       }
 
       renderTooltip() {
+        // var name = this.state.convo[0].name
         return (
           <div className="popup">
-          {this.props.id}
-        </div>
+            <Card style={{ width: '21rem' }}>
+              <Card.Body>
+                <Card.Title style={{fontSize: '16px', paddingBottom: '5px'}}>{this.showStatus(this.props.status)} Ticket #{this.props.id} ({this.showPriority(this.props.priority)})</Card.Title>
+                <Card.Subtitle style={{fontSize: '14px', fontWeight: 600}} className="mb-2 text-muted">{this.props.subject}</Card.Subtitle>
+                <Card.Text>
+                  <div style={{fontSize: '15px', fontWeight: 400}}>{this.props.message}</div>
+                  <br />
+                  <div style={{fontSize: '15px', color:'#2F3941'}}>Latest comment</div>
+                  <hr />
+                  <div style={{fontWeight: 600, fontSize: '14px'}}>
+                    {/* {name} */}
+                  </div>
+                  <div style={{fontWeight: 400, fontSize: '14px'}}>
+                    {/* {this.state.convo[0].message}  */}
+                  </div>
+                </Card.Text>
+              </Card.Body>
+            </Card>          
+          </div> 
         )
+      }
+
+      restoreOrDelete() {
+        if (this.props.status === "deleted") {
+          return (
+            <div>
+              <Button size="sm" variant="success" onClick={this.restoreRequest}>Restore</Button>
+              
+            </div>
+          )
+        } else {
+            return (
+              <div>
+                <Button size="sm" variant="danger" onClick={this.deleteRequest}>Delete</Button>
+              </div>
+            )
+        }
+      }
+
+      deleteRequest() {
+        this.setState({ isDeleted: true})
+        return axios.post("http://accenturesutd.herokuapp.com/tickets/" + this.props.id + "/delete")      
+      }
+
+      restoreRequest() {
+        this.setState({ isDeleted: false})
+        return axios.post("http://accenturesutd.herokuapp.com/tickets/" + this.props.id + "/restore")      
       }
 
 
       render() {
         return (
           <React.Fragment>
-            {(!this.state.replied) &&
-              <React.Fragment>
-              <OverlayTrigger
-                placement="top"
-                delay={{ show: 250, hide: 400 }}
-                overlay={this.renderTooltip}
-              >  
-              <tr onClick={this.handleShowMessage} style={{cursor: 'pointer'}}>
-                <td><Form.Check type="checkbox" /></td>
-                <td>{this.badgeColor(this.props.status)}</td>
-                <td>{this.props.subject}</td>
-                <td>{this.props.requester}</td>
-                <td>{this.props.date_created}</td>
-                <td>{this.props.topic}</td>
-                <td>{this.props.priority}</td>
-              </tr>
-              </OverlayTrigger>
+          <OverlayTrigger
+            placement="top"
+            delay={{ show: 250, hide: 400 }}
+            overlay={this.renderTooltip}
+          >  
+          <tr onClick={this.handleShowMessage} style={{cursor: 'pointer'}}>
+            <td><Form.Check type="checkbox" /></td>
+            <td>{this.badgeColor(this.props.status)}</td>
+            <td>{this.props.subject}</td>
+            <td>{this.props.requester}</td>
+            <td>{this.props.date_created}</td>
+            <td>{this.props.topic}</td>
+            <td>{this.props.priority}</td>
+          </tr>
+          </OverlayTrigger>
+              
             
             <Modal size="xl" show={this.state.showMessage} onHide={this.handleCloseMessage}>
-            <Modal.Header closeButton>
+            <div className="convo-content-container">
+              <Row>
+                <Col xs={3}>
+                  <div className="sidebar-container">
+                    <div style={{display: 'block'}}>
+                      <div className="convo-sidebar-title" style={{float: 'left', paddingTop: '5px'}}>Assignee</div>
+                      <div className="convo-sidebar-click" style={{ float: 'right', paddingTop: '5px'}}><a onClick={this.assignTicket()}>take it</a></div>
+                    </div>
+                    <Form.Control size="sm" as="select">
+                      <option>Kenneth Ng</option>
+                    </Form.Control>
+                    <div style={{display: 'block', paddingTop: '20px'}}>
+                      <div className="convo-sidebar-title" style={{float: 'left', paddingTop: '5px'}}>CCs</div>
+                      <div className="convo-sidebar-click" style={{ float: 'right', paddingTop: '5px'}}>cc me</div>
+                    </div>
+                    <Form.Control size="sm" placeholder="search name or contact info" />
+                    <hr/>
+                    <div className="convo-sidebar-title">Tags</div>
+                    <Form.Control size="sm" />
+                    <div className="convo-sidebar-title">Type</div>
+                    <Form.Control size="sm" as="select" defaultValue="Incident">
+                      <option>-</option>
+                      <option>Question</option>
+                      <option>Incident</option>
+                      <option>Problem</option>
+                      <option>Task</option>
+                    </Form.Control>
+                    <div className="convo-sidebar-title">Priority</div>
+                    <Form.Control size="sm" as="select">
+                      <option>Normal</option>
+                      <option>Urgent</option>
+                    </Form.Control>
+
+                  </div>
+                </Col>
+                <Col xs={9}>
+                <Modal.Header closeButton>
               <Modal.Title>
                 <Row>
                   <Col xs={2}>
@@ -272,7 +385,10 @@ class Request extends Component {
                   <Col xs={10}>
                     <div className="title-container">
                       <div className="subject-title">Subject: {this.props.subject}</div>
-                      <div className="ticket-info">{this.props.date_created} <span>&#183;</span> {this.props.requester} via {this.props.user_email}</div>
+                      
+                        <div className="ticket-info">{this.props.date_created} <span>&#183;</span> {this.props.requester} via {this.props.user_email}</div>
+                        {this.restoreOrDelete()}
+                      
                     </div>
                   </Col>
                 </Row>         
@@ -323,10 +439,12 @@ class Request extends Component {
               {this.showConvoList()}
             
             </Modal.Body>
+                </Col>
+              </Row>
+            </div>
+
           </Modal>
           </React.Fragment> 
-          }
-          </React.Fragment>
         )
       }
 }
