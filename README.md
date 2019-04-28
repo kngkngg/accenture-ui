@@ -1,4 +1,6 @@
-systemTesting branch contains test cases for system testing of our final product
+***
+systemTesting branch contains test cases for system testing and robustness testing of our final product.
+***
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
